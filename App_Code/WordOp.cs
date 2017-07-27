@@ -9,6 +9,9 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 //引用Interop.Microsoft.Office.Interop.Word.dll
 using Microsoft.Office.Interop.Word;
+using ICSharpCode.SharpZipLib.Zip;
+using ICSharpCode.SharpZipLib.Checksums;
+//using ICSharpCode.SharpZipLib.Core;
 using System.IO;
 // <summary>
 //WordOp
@@ -88,31 +91,19 @@ public void activeWordApp()
             }
         }
     }
-    public void CreateRar(string pSource, string pDestination)
+    public static void PackFiles(string filename, string directory)
     {
-        string _Source = pSource.ToString();
-        string _Destination = pDestination.ToString();
-        System.Diagnostics.Process _Process = new System.Diagnostics.Process();
-        _Process.StartInfo.FileName = "Winrar.exe";
-        _Process.StartInfo.CreateNoWindow = true;
-        _Process.StartInfo.Arguments = " a -r -ep1 " + _Destination + " " + _Source;
-        _Process.Start();
-        _Process.WaitForExit();
-        if (_Process.HasExited)
+        try
         {
-            int iExitCode = _Process.ExitCode;
-            if (iExitCode == 0)
-            {
-                //压缩成功
-            }
-          
-            else
-            {
-                //压缩失败
-            }
+            FastZip fz = new FastZip();
+            fz.CreateEmptyDirectories = true;
+            fz.CreateZip(filename, directory, true, "");
+            fz = null;
         }
-                _Process.Close();
-            }
-//    调用CreateRar（），将要压缩的文件夹和文件夹压缩后的存放路径及名称作为参数，传给此方法。
-//如：CreateRar(压缩文件路径), 存放路径+ "/Word.rar"));
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
 }

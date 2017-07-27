@@ -45,7 +45,13 @@ public partial class form1 : System.Web.UI.Page
         wop.SaveAs(Server.MapPath("targetword") + "//"+m.UserID+"doc", true);
         wop.Quit();
         }
-        wop.CreateRar(Server.MapPath("targetword"), Server.MapPath("download") + "/data.rar");
+
+        /// <summary>  
+        /// 压缩  
+        /// </summary>   
+        /// <param name="filename"> 压缩后的文件名(包含物理路径)</param>  
+        /// <param name="directory">待压缩的文件夹(包含物理路径)</param>  
+       WordOp.PackFiles(@Server.MapPath("download") + "/data.zip", Server.MapPath("targetword"));
         Response.Write("ok,now press the download button...");
         LinkButton1.Visible = true;
         //HyperLink1.Visible = true;
@@ -57,7 +63,7 @@ public partial class form1 : System.Web.UI.Page
     protected void LinkButton1_Click(object sender, EventArgs e)
     {
         //服务器文件路径
-        string strFilePath = Server.MapPath("download") + "/data.rar";
+        string strFilePath = Server.MapPath("download") + "/data.zip";
         FileInfo fileInfo = new FileInfo(strFilePath);
         Response.Clear();
         Response.AddHeader("content-disposition", "attachment;filename=" + Server.UrlEncode(fileInfo.Name.ToString()));
